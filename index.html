@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Quiz Elixir Immo</title>
+  <title>Quiz — Afterwork</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:   #C9A84C;
-      --gold2:  #E8C96A;
-      --dark:   #0D0D1A;
-      --navy:   #12122A;
-      --card:   #1A1A35;
-      --border: rgba(201,168,76,0.2);
-      --text:   #F0EEE8;
-      --muted:  rgba(240,238,232,0.45);
+      --teal:   #3DBAB5;
+      --teal2:  #6DD4CF;
+      --dark:   #0C0F12;
+      --card:   #181D22;
+      --card2:  #1E252C;
+      --border: rgba(61,186,181,0.18);
+      --border2:rgba(255,255,255,0.07);
+      --text:   #EEF0F2;
+      --muted:  rgba(238,240,242,0.42);
+      --muted2: rgba(238,240,242,0.22);
     }
 
     html, body { height: 100%; }
@@ -34,189 +36,266 @@
       overflow-x: hidden;
     }
 
-    body::before, body::after {
+    body::before {
       content: '';
       position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: 0;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(61,186,181,0.1) 0%, transparent 70%);
+      top: -150px; right: -150px;
+      pointer-events: none; z-index: 0;
     }
-    body::before { width: 400px; height: 400px; background: var(--gold); top: -100px; right: -80px; }
-    body::after  { width: 350px; height: 350px; background: #4a3080; bottom: -80px; left: -60px; }
+    body::after {
+      content: '';
+      position: fixed;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(61,186,181,0.05) 0%, transparent 70%);
+      bottom: -100px; left: -100px;
+      pointer-events: none; z-index: 0;
+    }
 
     .card {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 28px;
+      border: 1px solid var(--border2);
+      border-radius: 24px;
       padding: 36px 28px;
       width: 100%;
       max-width: 460px;
       position: relative;
       z-index: 1;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      animation: slideUp 0.5s cubic-bezier(.22,.68,0,1.2) both;
+      box-shadow:
+        0 0 0 1px rgba(61,186,181,0.05) inset,
+        0 24px 64px rgba(0,0,0,0.5);
+      animation: slideUp 0.5s cubic-bezier(.22,.68,0,1.15) both;
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .logo { text-align: center; margin-bottom: 32px; }
-    .logo-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-    .logo-name { font-size: 28px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
-    .logo-name span { color: var(--gold); }
-    .logo-tagline { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+    /* ── LOGO ── */
+    .logo {
+      display: flex; flex-direction: column; align-items: center;
+      margin-bottom: 28px; gap: 12px;
+    }
+    .logo-mark { display: flex; align-items: center; gap: 10px; }
+    .logo-svg  { width: 44px; height: 30px; }
+    .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .logo-oswald { font-size: 19px; font-weight: 900; color: var(--text); letter-spacing: 2.5px; text-transform: uppercase; }
+    .logo-orb    { font-size: 19px; font-weight: 900; color: var(--teal); letter-spacing: 2.5px; text-transform: uppercase; }
+    .logo-tagline {
+      font-size: 10.5px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--muted2);
+      padding: 6px 16px; border: 1px solid var(--border2);
+      border-radius: 99px; background: rgba(255,255,255,0.02);
+    }
 
-    .divider { height: 1px; background: var(--border); margin: 0 -28px 28px; }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(61,186,181,0.2), transparent);
+      margin: 0 -28px 28px;
+    }
+
+    /* ── WAITING ── */
+    #screen-waiting { text-align: center; }
+    .waiting-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .waiting-title   { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.3px; }
+    .waiting-sub     { font-size: 13px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+
+    .countdown-wrap {
+      display: flex; justify-content: center; align-items: center;
+      gap: 8px; margin: 0 auto 28px;
+    }
+    .cd-block {
+      display: flex; flex-direction: column; align-items: center;
+      background: var(--card2); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 16px 12px; min-width: 72px;
+    }
+    .cd-num {
+      font-size: 40px; font-weight: 900; color: var(--text);
+      line-height: 1; letter-spacing: -2px; transition: opacity 0.12s;
+    }
+    .cd-num.tick { opacity: 0.2; }
+    .cd-unit { font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted2); margin-top: 6px; }
+    .cd-sep  { font-size: 30px; font-weight: 900; color: var(--teal); margin-bottom: 16px; opacity: 0.5; animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:0.5} 50%{opacity:0.1} }
+
+    .waiting-opens { font-size: 13px; color: var(--muted); }
+    .waiting-opens strong { color: var(--teal2); font-weight: 700; }
+    .live-dot {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11.5px; color: var(--muted2); margin-top: 28px;
+    }
+    .live-dot::before {
+      content: ''; display: inline-block; width: 7px; height: 7px;
+      border-radius: 50%; background: var(--teal);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.2)} }
+
+    /* ── CLOSED ── */
+    #screen-closed { text-align: center; }
+    .closed-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 16px; border-radius: 99px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border2);
+      font-size: 12px; color: var(--muted); margin-bottom: 24px;
+    }
+    #screen-closed h2 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .closed-body { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .closed-body strong { color: var(--text); font-weight: 600; }
 
     /* ── WELCOME ── */
-    #screen-welcome h2 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-    #screen-welcome p  { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 28px; }
-    #screen-welcome p strong { color: var(--gold); font-weight: 700; }
+    #screen-welcome h2 { font-size: 21px; font-weight: 800; color: var(--text); margin-bottom: 8px; letter-spacing: -0.3px; }
+    .welcome-sub { color: var(--muted); font-size: 14px; line-height: 1.65; margin-bottom: 24px; }
+    .welcome-sub strong { color: var(--teal2); font-weight: 600; }
 
-    .field-label { font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: block; }
-    input[type="text"] { width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 14px; font-size: 16px; font-family: inherit; color: var(--text); margin-bottom: 16px; outline: none; transition: border-color 0.2s, background 0.2s; }
-    input[type="text"]::placeholder { color: rgba(255,255,255,0.2); }
-    input[type="text"]:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+    .rules { display: flex; gap: 10px; margin-bottom: 24px; }
+    .rule-item { flex: 1; background: var(--card2); border: 1px solid var(--border2); border-radius: 14px; padding: 14px 10px; text-align: center; }
+    .rule-icon { font-size: 20px; margin-bottom: 5px; }
+    .rule-text { font-size: 10.5px; font-weight: 600; color: var(--muted2); line-height: 1.4; }
+    .rule-val  { font-size: 17px; font-weight: 900; color: var(--text); margin-top: 3px; }
 
-    .btn-start { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 17px; border: none; border-radius: 16px; background: linear-gradient(135deg, var(--gold) 0%, #b8892a 100%); color: #0D0D1A; font-size: 16px; font-weight: 800; font-family: inherit; cursor: pointer; margin-top: 8px; transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s; box-shadow: 0 4px 20px rgba(201,168,76,0.35); letter-spacing: 0.2px; }
-    .btn-start:hover  { opacity: 0.92; box-shadow: 0 6px 28px rgba(201,168,76,0.45); }
+    .field-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted2); margin-bottom: 8px; display: block; }
+    input[type="text"] {
+      width: 100%; padding: 14px 18px; background: var(--card2);
+      border: 1.5px solid var(--border2); border-radius: 14px;
+      font-size: 16px; font-family: inherit; color: var(--text);
+      margin-bottom: 14px; outline: none; transition: border-color 0.2s, background 0.2s;
+    }
+    input[type="text"]::placeholder { color: var(--muted2); }
+    input[type="text"]:focus { border-color: var(--teal); background: rgba(61,186,181,0.05); }
+
+    .btn-start {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 17px; border: none; border-radius: 16px;
+      background: var(--teal); color: #0C0F12;
+      font-size: 15px; font-weight: 800; font-family: inherit;
+      cursor: pointer; margin-top: 8px;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      box-shadow: 0 4px 20px rgba(61,186,181,0.28);
+      letter-spacing: 0.3px;
+    }
+    .btn-start:hover  { opacity: 0.9; box-shadow: 0 6px 28px rgba(61,186,181,0.4); }
     .btn-start:active { transform: scale(0.97); }
-    .btn-start svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .btn-start svg { width: 17px; height: 17px; flex-shrink: 0; }
 
     /* ── PROGRESS ── */
-    .progress-wrap { margin-bottom: 24px; }
+    .progress-wrap { margin-bottom: 22px; }
     .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .q-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
-    .q-dots { display: flex; gap: 5px; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.12); transition: background 0.3s, transform 0.3s; }
-    .dot.done   { background: var(--gold); }
-    .dot.active { background: var(--gold2); transform: scale(1.3); }
-
-    .progress-bar-outer { height: 4px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
-    .progress-bar-inner { height: 4px; border-radius: 999px; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+    .q-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted2); }
+    .q-dots  { display: flex; gap: 5px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: background 0.3s, transform 0.3s; }
+    .dot.done   { background: var(--teal); }
+    .dot.active { background: var(--teal2); transform: scale(1.4); }
+    .progress-bar-outer { height: 3px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+    .progress-bar-inner { height: 3px; border-radius: 999px; background: linear-gradient(90deg, var(--teal), var(--teal2)); transition: width 0.5s cubic-bezier(.4,0,.2,1); }
 
     /* ── TIMER ── */
-    .quiz-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .quiz-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
     .question-text { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.5; flex: 1; }
     .timer-wrap { flex-shrink: 0; }
-    .timer-wrap svg { display: block; transform: rotate(-90deg); width: 48px; height: 48px; }
-    .t-bg   { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 3.5; }
-    .t-ring { fill: none; stroke: var(--gold); stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 120; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
-    .t-ring.urgent { stroke: #e05555; }
-    .timer-num-wrap { position: relative; width: 48px; height: 48px; margin-top: -48px; display: flex; align-items: center; justify-content: center; }
-    .timer-num { font-size: 15px; font-weight: 800; color: var(--gold); transition: color 0.3s; }
-    .timer-num.urgent { color: #e05555; }
+    .timer-wrap svg { display: block; transform: rotate(-90deg); width: 50px; height: 50px; }
+    .t-bg   { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 3; }
+    .t-ring { fill: none; stroke: var(--teal); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 120; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
+    .t-ring.urgent { stroke: #E05555; }
+    .timer-num-wrap { position: relative; width: 50px; height: 50px; margin-top: -50px; display: flex; align-items: center; justify-content: center; }
+    .timer-num { font-size: 16px; font-weight: 800; color: var(--teal); transition: color 0.3s; }
+    .timer-num.urgent { color: #E05555; }
 
     /* ── ANSWERS ── */
     .answers { display: flex; flex-direction: column; gap: 10px; }
-    .answer-btn { width: 100%; padding: 15px 18px; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 14px; font-size: 14.5px; font-weight: 500; font-family: inherit; color: var(--text); text-align: left; cursor: pointer; transition: all 0.2s; line-height: 1.4; display: flex; align-items: center; gap: 12px; }
-    .answer-letter { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--muted); flex-shrink: 0; transition: all 0.2s; }
-    @media (hover: hover) {
-  .answer-btn:hover:not(:disabled) { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.07); }
-  .answer-btn:hover:not(:disabled) .answer-letter { background: rgba(201,168,76,0.2); color: var(--gold); }
-}
-    .answer-btn.selected { border-color: var(--gold); background: rgba(201,168,76,0.12); }
-    .answer-btn.selected .answer-letter { background: var(--gold); color: #0D0D1A; }
-    .answer-btn.timeout { opacity: 0.4; }
+    .answer-btn {
+      width: 100%; padding: 15px 16px; background: var(--card2);
+      border: 1.5px solid var(--border2); border-radius: 14px;
+      font-size: 14px; font-weight: 500; font-family: inherit;
+      color: var(--text); text-align: left; cursor: pointer;
+      transition: all 0.18s; line-height: 1.4;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .answer-letter {
+      width: 30px; height: 30px; border-radius: 9px;
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--muted2);
+      flex-shrink: 0; transition: all 0.18s;
+    }
+    .answer-btn:hover:not(:disabled) { border-color: rgba(61,186,181,0.35); background: rgba(61,186,181,0.06); }
+    .answer-btn:hover:not(:disabled) .answer-letter { background: rgba(61,186,181,0.15); color: var(--teal); }
+    .answer-btn.selected { border-color: var(--teal); background: rgba(61,186,181,0.1); }
+    .answer-btn.selected .answer-letter { background: var(--teal); color: #0C0F12; font-weight: 800; }
+    .answer-btn.correct { border-color: #3DBB7A; background: rgba(61,187,122,0.1); color: var(--text); }
+    .answer-btn.correct .answer-letter { background: #3DBB7A; color: #0C0F12; font-weight: 800; }
+    .answer-btn.wrong { border-color: #E05555; background: rgba(224,85,85,0.1); color: var(--muted); }
+    .answer-btn.wrong .answer-letter { background: #E05555; color: #fff; font-weight: 800; }
+    .answer-btn.timeout { opacity: 0.35; }
     .answer-btn:disabled { cursor: default; }
 
     /* ── RESULT ── */
     #screen-result { text-align: center; }
-    .result-icon { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05)); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 38px; margin: 0 auto 20px; }
-    #screen-result h2 { font-size: 24px; font-weight: 900; color: var(--text); margin-bottom: 10px; letter-spacing: -0.3px; }
-    .result-player { font-size: 15px; font-weight: 600; color: var(--gold); margin-bottom: 24px; }
-    .result-separator { width: 40px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto 24px; }
-    .result-body { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; padding: 0 8px; }
-    .result-body strong { color: var(--text); font-weight: 600; }
-    .result-footer { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.2); padding: 10px 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 99px; }
+    .result-icon { width: 76px; height: 76px; border-radius: 50%; background: rgba(61,186,181,0.08); border: 1.5px solid rgba(61,186,181,0.2); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 20px; }
+    #screen-result h2 { font-size: 23px; font-weight: 900; color: var(--text); margin-bottom: 6px; letter-spacing: -0.3px; }
+    .result-player { font-size: 15px; font-weight: 600; color: var(--teal); margin-bottom: 24px; }
+    .result-divider { width: 36px; height: 2px; background: linear-gradient(90deg, transparent, var(--teal), transparent); margin: 0 auto 24px; }
+    .score-display {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      margin: 0 auto 24px;
+    }
+    .score-num {
+      font-size: 64px; font-weight: 900; color: var(--teal);
+      line-height: 1; letter-spacing: -3px;
+    }
+    .score-denom {
+      font-size: 28px; font-weight: 700; color: var(--muted);
+      align-self: flex-end; margin-bottom: 8px; margin-left: 4px;
+    }
+    .score-bar-wrap {
+      width: 100%; height: 4px; background: rgba(255,255,255,0.07);
+      border-radius: 99px; overflow: hidden; margin-bottom: 24px;
+    }
+    .score-bar-fill {
+      height: 4px; border-radius: 99px;
+      background: linear-gradient(90deg, var(--teal), var(--teal2));
+      transition: width 1s cubic-bezier(.4,0,.2,1);
+    }
+    .result-body { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; padding: 0 4px; }
+    .result-body strong { color: var(--text); font-weight: 700; }
+    .result-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--muted2); padding: 9px 16px; background: var(--card2); border: 1px solid var(--border2); border-radius: 99px; }
 
-    /* sending indicator */
     .send-status { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; color: var(--muted); margin-top: 16px; min-height: 20px; }
-    .send-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 1.2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
-    .send-ok  { color: #5cb85c; }
-    .send-err { color: #e05555; }
+    .send-anim { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: pulse 1.2s infinite; }
+    .send-ok  { color: #3DBB7A; }
+    .send-err { color: #E05555; }
 
-    /* ── WAITING SCREEN ── */
-    #screen-waiting { text-align: center; }
-    .waiting-label {
-      font-size: 11px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
-    }
-    .countdown-wrap {
-      display: flex; justify-content: center; align-items: center;
-      gap: 6px; margin: 0 auto 24px;
-    }
-    .cd-block {
-      display: flex; flex-direction: column; align-items: center;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 16px 14px; min-width: 68px;
-    }
-    .cd-num {
-      font-size: 38px; font-weight: 900; color: var(--text);
-      line-height: 1; letter-spacing: -1px;
-      transition: opacity 0.15s;
-    }
-    .cd-num.tick { opacity: 0.4; }
-    .cd-unit {
-      font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--muted); margin-top: 6px;
-    }
-    .cd-sep {
-      font-size: 32px; font-weight: 900; color: var(--gold);
-      margin-bottom: 18px; opacity: 0.5;
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:0.5} 50%{opacity:0.1} }
-    .waiting-unlock {
-      font-size: 13px; color: var(--muted); margin-bottom: 8px;
-    }
-    .waiting-unlock strong { color: var(--gold2); font-weight: 700; }
-    .waiting-note {
-      font-size: 12px; color: rgba(255,255,255,0.15);
-      margin-top: 24px;
-    }
-
-    /* ── CLOSED SCREEN ── */
-    #screen-closed { text-align: center; }
-    .closed-icon {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: rgba(224,85,85,0.1);
-      border: 1.5px solid rgba(224,85,85,0.25);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 38px; margin: 0 auto 20px;
-    }
-    #screen-closed h2 { font-size: 22px; font-weight: 900; color: var(--text); margin-bottom: 10px; }
-    .closed-body { font-size: 14px; color: var(--muted); line-height: 1.7; padding: 0 8px; }
-    .pulse-dot {
-      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--gold); margin-right: 6px; vertical-align: middle;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    .screen { animation: fadeIn 0.35s ease both; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .screen { animation: fadeUp 0.38s cubic-bezier(.22,.68,0,1.1) both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 <div class="card">
 
+  <!-- LOGO -->
   <div class="logo">
-    <div class="logo-eyebrow">Afterwork</div>
-    <div class="logo-name">Elixir <span>Immo</span></div>
-    <div class="logo-tagline">Quiz de soirée — Bonsoir ! 🥂</div>
+    <div class="logo-mark">
+      <svg class="logo-svg" viewBox="0 0 64 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="21" cy="21" r="17" stroke="#3DBAB5" stroke-width="5"/>
+        <circle cx="52" cy="29" r="10" fill="#3DBAB5"/>
+      </svg>
+      <div class="logo-wordmark">
+        <span class="logo-oswald">Oswald</span>
+        <span class="logo-orb">Orb</span>
+      </div>
+    </div>
+    <div class="logo-tagline">Quiz — Afterwork</div>
   </div>
   <div class="divider"></div>
 
   <!-- WAITING -->
   <div id="screen-waiting" class="screen hidden">
-    <div class="waiting-label">Soirée Elixir Immo 🥂</div>
+    <div class="waiting-eyebrow">Ce soir</div>
+    <div class="waiting-title">Le quiz commence dans</div>
+    <div class="waiting-sub">Installez-vous confortablement,<br/>le jeu ouvrira ses portes très bientôt.</div>
     <div class="countdown-wrap">
       <div class="cd-block"><span class="cd-num" id="cd-h">00</span><span class="cd-unit">heures</span></div>
       <div class="cd-sep">:</div>
@@ -224,33 +303,56 @@
       <div class="cd-sep">:</div>
       <div class="cd-block"><span class="cd-num" id="cd-s">00</span><span class="cd-unit">secondes</span></div>
     </div>
-    <div class="waiting-unlock">Le quiz ouvre à <strong id="unlock-label"></strong></div>
-    <div class="waiting-note"><span class="pulse-dot"></span>En attendant, profite de la soirée !</div>
+    <div class="waiting-opens">Ouverture à <strong id="unlock-label"></strong></div>
+    <div class="live-dot">En attente d'ouverture</div>
   </div>
 
   <!-- CLOSED -->
   <div id="screen-closed" class="screen hidden">
-    <div class="closed-icon">🔒</div>
-    <h2>Quiz terminé</h2>
-    <div class="result-separator" style="margin:16px auto 20px"></div>
+    <div class="closed-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Quiz clôturé à <strong id="lock-label" style="color:var(--text);font-weight:700;margin-left:3px"></strong>
+    </div>
+    <h2>Merci à tous !</h2>
+    <div class="result-divider" style="margin:16px auto 20px"></div>
     <div class="closed-body">
-      Le quiz s'est clôturé à <strong id="lock-label" style="color:var(--text)"></strong>.<br/><br/>
-      Les résultats seront annoncés très prochainement.<br/>
-      Merci d'avoir participé ! 🥂
+      Le quiz est désormais fermé.<br/>
+      <strong>Les résultats seront annoncés très prochainement.</strong><br/><br/>
+      Nous espérons que cette soirée vous a plu.<br/>À très bientôt ! 🥂
     </div>
   </div>
 
   <!-- WELCOME -->
   <div id="screen-welcome" class="screen hidden">
     <h2>Bonsoir 👋</h2>
-    <p>Bienvenue dans le quiz de la soirée. Renseigne ton nom, puis réponds aux <strong>10 questions</strong> — tu as <strong>15 secondes</strong> par question. Bonne chance !</p>
+    <div class="welcome-sub">
+      Bienvenue dans le quiz de la soirée.<br/>
+      <strong>10 questions</strong> · <strong>15 secondes</strong> par question · <strong>une seule chance</strong> — à vous de jouer !
+    </div>
+    <div class="rules">
+      <div class="rule-item">
+        <div class="rule-icon">❓</div>
+        <div class="rule-text">Questions</div>
+        <div class="rule-val">10</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">⏱</div>
+        <div class="rule-text">Par question</div>
+        <div class="rule-val">15s</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">🏆</div>
+        <div class="rule-text">Gagnant</div>
+        <div class="rule-val">×1</div>
+      </div>
+    </div>
     <label class="field-label" for="inp-prenom">Prénom</label>
-    <input type="text" id="inp-prenom" placeholder="Ton prénom" autocomplete="given-name" />
+    <input type="text" id="inp-prenom" placeholder="Votre prénom" autocomplete="given-name" />
     <label class="field-label" for="inp-nom">Nom</label>
-    <input type="text" id="inp-nom" placeholder="Ton nom" autocomplete="family-name" />
+    <input type="text" id="inp-nom" placeholder="Votre nom" autocomplete="family-name" />
     <button class="btn-start" onclick="startQuiz()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Commencer
+      Lancer le quiz
     </button>
   </div>
 
@@ -273,7 +375,7 @@
           <circle class="t-ring" id="timer-ring" cx="22" cy="22" r="19"/>
         </svg>
         <div class="timer-num-wrap">
-          <span class="timer-num" id="timer-num">15</span>
+          <span class="timer-num" id="timer-num">10</span>
         </div>
       </div>
     </div>
@@ -285,76 +387,108 @@
     <div class="result-icon">🥂</div>
     <h2>Merci !</h2>
     <div class="result-player" id="result-player"></div>
-    <div class="result-separator"></div>
-    <div class="result-body">
-      Tu as relevé le défi jusqu'au bout.<br/>
-      <strong>Les résultats seront annoncés ce soir.</strong><br/><br/>
-      En attendant, profite de la soirée — et qui sait, peut-être que la victoire t'attend ! 🏆
+    <div class="result-divider"></div>
+    <div class="score-display">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-denom">/10</span>
     </div>
-    <div class="result-footer">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Quiz terminé à <span id="result-time"></span>
+    <div class="score-bar-wrap">
+      <div class="score-bar-fill" id="score-bar" style="width:0%"></div>
+    </div>
+    <div class="result-body">
+      <strong>Les résultats seront annoncés ce soir.</strong><br/><br/>
+      En attendant, profitez de la soirée —<br/>
+      la victoire est peut-être la vôtre ! 🏆
+    </div>
+    <div class="result-tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Réponses enregistrées à <span id="result-time"></span>
     </div>
     <div class="send-status" id="send-status"></div>
   </div>
 
 </div>
-
 <script>
-/* ═══════════════════════════════════════════
+/* ═══════════════════════════════════════
    ⚙️  CONFIGURATION
-   ═══════════════════════════════════════════ */
+═══════════════════════════════════════ */
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw9Kbmm5l9gb-zNqdmCzVDMB3DTgYfROnkjyugKsd3l8jL-OUopWCm3a5Fi27ZBbkxJ/exec";
+const UNLOCK_TIME = "2026-04-15T19:30:00";
+const LOCK_TIME   = "2026-04-16T20:00:00";
 
-// 🕐 Heure d'ouverture du quiz — format : "YYYY-MM-DDTHH:MM:SS"
-//    Ex : ouverture le 15 avril 2026 à 19h30 → "2026-04-15T19:30:00"
-// 🕐 Heure d'ouverture — modifie selon ton afterwork
-const UNLOCK_TIME = "2026-04-15T18:31:00";
-
-// 🔒 Heure de fermeture — plus personne ne peut démarrer après
-const LOCK_TIME   = "2026-04-15T20:00:00";
-
-/* ════════════════════════════════
-   QUESTIONS — À PERSONNALISER
-   correct = index de la bonne réponse (0=A 1=B 2=C 3=D)
-════════════════════════════════ */
+/* ═══════════════════════════════════════
+   ❓  QUESTIONS  (correct = index 0-3)
+═══════════════════════════════════════ */
 const QUESTIONS = [
-  { q: "En quelle année Elixir Immo a-t-il été fondé ?",                         answers: ["2015","2018","2020","2012"],                                          correct: 1 },
-  { q: "Dans quelle ville est basé le siège social d'Elixir Immo ?",             answers: ["Lyon","Bordeaux","Paris","Marseille"],                                 correct: 2 },
-  { q: "Quel est le nombre de transactions réalisées par Elixir Immo en 2025 ?", answers: ["250","480","750","1 200"],                                             correct: 2 },
-  { q: "Quelle est la spécialité principale d'Elixir Immo ?",                    answers: ["Logements sociaux","Immobilier de prestige","Locaux commerciaux","Viager"], correct: 1 },
-  { q: "Quel outil numérique Elixir Immo utilise-t-il pour ses estimations ?",   answers: ["EstimPro","ValeurImmo","PrixNet","ImmoCote"],                          correct: 0 },
-  { q: "Combien d'agences Elixir Immo compte-t-il en France ?",                  answers: ["5","12","28","47"],                                                   correct: 2 },
-  { q: "Quel label de qualité Elixir Immo a-t-il obtenu en 2024 ?",              answers: ["ISO 9001","NF Habitat","Great Place To Work","Label FNAIM"],           correct: 2 },
-  { q: "Quel est le délai moyen de vente pour un bien Elixir Immo ?",            answers: ["45 jours","62 jours","90 jours","30 jours"],                          correct: 3 },
-  { q: "Quelle valeur est au cœur de l'ADN d'Elixir Immo ?",                    answers: ["Rentabilité","Rapidité","Transparence","Exclusivité"],                 correct: 2 },
-  { q: "Comment s'appelle le programme de fidélité clients d'Elixir Immo ?",     answers: ["Elixir Club","Premium Immo","Chez Moi+","My Elixir"],                  correct: 0 }
+  {
+    q: "Que signifie l'acronyme VEFA ?",
+    answers: ["Vente En Futur Aménagement", "Vente En l'État Futur d'Achèvement", "Valeur Estimée du Foncier Acquis", "Vente Effective du Foncier Aménagé"],
+    correct: 1
+  },
+  {
+    q: "Quel est le délai légal de rétractation après la signature d'un contrat de réservation en VEFA ?",
+    answers: ["3 jours", "7 jours", "10 jours", "14 jours"],
+    correct: 2
+  },
+  {
+    q: "Quel dispositif fiscal de l'immobilier neuf locatif a pris fin le 31 décembre 2024 ?",
+    answers: ["Dispositif Malraux", "Dispositif Denormandie", "Dispositif Pinel", "Dispositif Censi-Bouvard"],
+    correct: 2
+  },
+  {
+    q: "Quelle garantie assure la livraison d'un bien neuf même en cas de défaillance financière du promoteur ?",
+    answers: ["Garantie biennale", "Garantie de parfait achèvement", "Garantie décennale", "Garantie Financière d'Achèvement (GFA)"],
+    correct: 3
+  },
+  {
+    q: "Combien d'années couvre la garantie décennale après la réception des travaux ?",
+    answers: ["2 ans", "5 ans", "10 ans", "20 ans"],
+    correct: 2
+  },
+  {
+    q: "Quel référentiel de performance énergétique s'applique aux constructions neuves depuis janvier 2022 ?",
+    answers: ["RT 2012", "BBC Effinergie", "HQE Premium", "RE2020"],
+    correct: 3
+  },
+  {
+    q: "Quel est le montant maximum du dépôt de garantie si la livraison est prévue dans plus de 2 ans ?",
+    answers: ["1 % du prix de vente", "2 % du prix de vente", "5 % du prix de vente", "10 % du prix de vente"],
+    correct: 1
+  },
+  {
+    q: "Quel organisme certifie le label NF Habitat pour les logements neufs ?",
+    answers: ["ADEME", "CSTB", "Cerqual", "QUALITEL"],
+    correct: 2
+  },
+  {
+    q: "Quel territoire concentre le plus grand nombre de mises en vente de logements neufs en France ?",
+    answers: ["Métropole de Lyon", "Bordeaux Métropole", "Île-de-France", "Métropole du Grand Lille"],
+    correct: 2
+  },
+  {
+    q: "Quel est le 1er critère de décision lors d'un achat en immobilier neuf selon les acquéreurs français ?",
+    answers: ["Le prix au m²", "La localisation du bien", "Les performances énergétiques", "Les délais de livraison"],
+    correct: 1
+  }
 ];
 
-/* ════ CONFIG ════ */
+/* ═══ CONFIG ═══ */
 const TOTAL_Q  = QUESTIONS.length;
 const DURATION = 15;
 const CIRCUMF  = 2 * Math.PI * 19;
 
-/* ════ STATE ════ */
-let playerName     = "";
-let currentQ       = 0;
-let score          = 0;
-let timerInt       = null;
-let secondsLeft    = DURATION;
-let answered       = false;
-let quizStartTime  = null;      // timestamp début quiz
-let qStartTime     = null;      // timestamp début question courante
-let answerLog      = [];        // [{q, answer, correct, timeSec}]
+/* ═══ STATE ═══ */
+let playerName = "", currentQ = 0, score = 0;
+let timerInt = null, countdownInt = null;
+let secondsLeft = DURATION, answered = false;
+let quizStartTime = null, qStartTime = null, answerLog = [];
 
-/* ════ INIT — vérifie l'heure d'ouverture ════ */
-let countdownInt = null;
+/* ═══ UTILS ═══ */
+function show(id) { const el = document.getElementById(id); el.classList.remove('hidden'); el.classList.add('screen'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+function fmt(d)   { return d.getHours().toString().padStart(2,'0') + 'h' + d.getMinutes().toString().padStart(2,'0'); }
 
-function fmt(date) {
-  return date.getHours().toString().padStart(2,'0') + 'h' +
-         date.getMinutes().toString().padStart(2,'0');
-}
-
+/* ═══ INIT ═══ */
 function initApp() {
   const unlockDate = new Date(UNLOCK_TIME);
   const lockDate   = new Date(LOCK_TIME);
@@ -363,75 +497,53 @@ function initApp() {
   document.getElementById('unlock-label').textContent = fmt(unlockDate);
   document.getElementById('lock-label').textContent   = fmt(lockDate);
 
-  // 1 — Quiz déjà fermé
-  if (now >= lockDate) {
-    show('screen-closed');
-    return;
-  }
+  if (now >= lockDate)   { show('screen-closed');  return; }
+  if (now >= unlockDate) { show('screen-welcome'); return; }
 
-  // 2 — Quiz ouvert
-  if (now >= unlockDate) {
-    show('screen-welcome');
-    return;
-  }
-
-  // 3 — Pas encore ouvert → countdown
   show('screen-waiting');
 
   function setNum(id, val) {
-    const el  = document.getElementById(id);
-    const str = val.toString().padStart(2,'0');
+    const el = document.getElementById(id), str = val.toString().padStart(2,'0');
     if (el.textContent !== str) {
       el.classList.add('tick');
       setTimeout(() => { el.textContent = str; el.classList.remove('tick'); }, 80);
     }
   }
 
-  function check() {
-    const now2 = Date.now();
-
-    // Vérif fermeture (cas extrême où quelqu'un attend très longtemps)
-    if (now2 >= lockDate) {
-      clearInterval(countdownInt);
-      hide('screen-waiting');
-      show('screen-closed');
-      return;
-    }
-
-    const diff = unlockDate - now2;
+  function tick() {
+    const n = Date.now();
+    if (n >= lockDate)   { clearInterval(countdownInt); hide('screen-waiting'); show('screen-closed'); return; }
+    const diff = unlockDate - n;
     if (diff <= 0) {
       clearInterval(countdownInt);
       const ws = document.getElementById('screen-waiting');
-      ws.style.transition = 'opacity 0.6s ease';
-      ws.style.opacity = '0';
-      setTimeout(() => { hide('screen-waiting'); show('screen-welcome'); }, 600);
+      ws.style.transition = 'opacity 0.5s'; ws.style.opacity = '0';
+      setTimeout(() => { hide('screen-waiting'); show('screen-welcome'); }, 500);
       return;
     }
-
-    const totalSec = Math.ceil(diff / 1000);
-    setNum('cd-h', Math.floor(totalSec / 3600));
-    setNum('cd-m', Math.floor((totalSec % 3600) / 60));
-    setNum('cd-s', totalSec % 60);
+    const s = Math.ceil(diff / 1000);
+    setNum('cd-h', Math.floor(s / 3600));
+    setNum('cd-m', Math.floor((s % 3600) / 60));
+    setNum('cd-s', s % 60);
   }
-
-  check();
-  countdownInt = setInterval(check, 1000);
+  tick();
+  countdownInt = setInterval(tick, 1000);
 }
 
-/* ════ START ════ */
+/* ═══ START ═══ */
 function startQuiz() {
   const prenom = document.getElementById('inp-prenom').value.trim();
   const nom    = document.getElementById('inp-nom').value.trim();
-  if (!prenom || !nom) { alert("Merci de renseigner ton prénom et ton nom 😊"); return; }
-  playerName    = prenom + " " + nom;
+  if (!prenom || !nom) { alert("Merci de renseigner votre prénom et votre nom 😊"); return; }
+  playerName = prenom + " " + nom;
   quizStartTime = Date.now();
   buildDots();
-  show('screen-quiz');
   hide('screen-welcome');
+  show('screen-quiz');
   loadQuestion();
 }
 
-/* ════ DOTS ════ */
+/* ═══ DOTS ═══ */
 function buildDots() {
   const wrap = document.getElementById('q-dots');
   wrap.innerHTML = '';
@@ -442,33 +554,29 @@ function buildDots() {
     wrap.appendChild(d);
   }
 }
-function updateDots(current) {
+function updateDots(cur) {
   for (let i = 0; i < TOTAL_Q; i++) {
     const d = document.getElementById('dot-' + i);
-    if (!d) continue;
-    d.className = 'dot' + (i < current ? ' done' : i === current ? ' active' : '');
+    if (d) d.className = 'dot' + (i < cur ? ' done' : i === cur ? ' active' : '');
   }
 }
 
-/* ════ LOAD QUESTION ════ */
+/* ═══ QUESTION ═══ */
 function loadQuestion() {
-  answered    = false;
-  secondsLeft = DURATION;
-  qStartTime  = Date.now();
-  const data  = QUESTIONS[currentQ];
+  answered = false; secondsLeft = DURATION; qStartTime = Date.now();
+  const data = QUESTIONS[currentQ];
 
   document.getElementById('q-label').textContent       = `Question ${currentQ + 1} / ${TOTAL_Q}`;
   document.getElementById('question-text').textContent = data.q;
   document.getElementById('progress-bar').style.width  = (currentQ / TOTAL_Q * 100) + '%';
   updateDots(currentQ);
 
-  const letters   = ['A','B','C','D'];
   const container = document.getElementById('answers');
   container.innerHTML = '';
-  data.answers.forEach((txt, i) => {
+  ['A','B','C','D'].forEach((letter, i) => {
     const btn = document.createElement('button');
     btn.className = 'answer-btn';
-    btn.innerHTML = `<span class="answer-letter">${letters[i]}</span>${txt}`;
+    btn.innerHTML = `<span class="answer-letter">${letter}</span>${data.answers[i]}`;
     btn.onclick   = () => selectAnswer(i, btn);
     container.appendChild(btn);
   });
@@ -481,17 +589,15 @@ function loadQuestion() {
   document.getElementById('timer-num').textContent = DURATION;
   ring.getBoundingClientRect();
   ring.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s';
-
   startTimer();
 }
 
-/* ════ TIMER ════ */
+/* ═══ TIMER ═══ */
 function startTimer() {
   clearInterval(timerInt);
   timerInt = setInterval(() => {
     secondsLeft--;
-    const ring  = document.getElementById('timer-ring');
-    const numEl = document.getElementById('timer-num');
+    const ring = document.getElementById('timer-ring'), numEl = document.getElementById('timer-num');
     ring.style.strokeDashoffset = CIRCUMF * (1 - secondsLeft / DURATION);
     numEl.textContent = secondsLeft;
     if (secondsLeft <= 3) { ring.classList.add('urgent'); numEl.classList.add('urgent'); }
@@ -499,87 +605,76 @@ function startTimer() {
   }, 1000);
 }
 
-/* ════ SELECT ════ */
+/* ═══ SELECT ═══ */
 function selectAnswer(index, btn) {
   if (answered) return;
   answered = true;
   clearInterval(timerInt);
-
   const timeSec = parseFloat(((Date.now() - qStartTime) / 1000).toFixed(2));
-  const isRight = index === QUESTIONS[currentQ].correct;
-
+  const correctIdx = QUESTIONS[currentQ].correct;
+  const isRight = index === correctIdx;
   answerLog.push({ q: currentQ + 1, answer: index, correct: isRight, timeSec });
   if (isRight) score++;
 
-  document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
-  btn.classList.add('selected');
-  setTimeout(next, 900);
+  const buttons = document.querySelectorAll('.answer-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  // Révèle la bonne réponse en vert, la mauvaise en rouge
+  btn.classList.add(isRight ? 'correct' : 'wrong');
+  if (!isRight) buttons[correctIdx].classList.add('correct');
+
+  setTimeout(next, 1400);
 }
 
-/* ════ TIMEOUT ════ */
+/* ═══ TIMEOUT ═══ */
 function timeOut() {
   answered = true;
   answerLog.push({ q: currentQ + 1, answer: null, correct: false, timeSec: DURATION });
-  document.querySelectorAll('.answer-btn').forEach(b => { b.disabled = true; b.classList.add('timeout'); });
-  setTimeout(next, 600);
+  const buttons = document.querySelectorAll('.answer-btn');
+  buttons.forEach(b => { b.disabled = true; b.classList.add('timeout'); });
+  // Montre quand même la bonne réponse
+  buttons[QUESTIONS[currentQ].correct].classList.remove('timeout');
+  buttons[QUESTIONS[currentQ].correct].classList.add('correct');
+  setTimeout(next, 1400);
 }
 
-/* ════ NEXT ════ */
-function next() {
-  currentQ++;
-  if (currentQ < TOTAL_Q) { loadQuestion(); } else { showResult(); }
-}
+/* ═══ NEXT ═══ */
+function next() { currentQ++; currentQ < TOTAL_Q ? loadQuestion() : showResult(); }
 
-/* ════ RESULT ════ */
+/* ═══ RESULT ═══ */
 function showResult() {
   hide('screen-quiz');
   show('screen-result');
   document.getElementById('result-player').textContent = playerName;
   document.getElementById('progress-bar').style.width = '100%';
   updateDots(TOTAL_Q);
-
+  // Score
+  document.getElementById('score-num').textContent = score;
+  setTimeout(() => {
+    document.getElementById('score-bar').style.width = (score / TOTAL_Q * 100) + '%';
+  }, 100);
   const now = new Date();
-  document.getElementById('result-time').textContent =
-    now.getHours().toString().padStart(2,'0') + 'h' +
-    now.getMinutes().toString().padStart(2,'0');
-
-  const totalSec = Math.round((Date.now() - quizStartTime) / 1000);
-  sendResults(totalSec, now);
+  document.getElementById('result-time').textContent = fmt(now);
+  sendResults(Math.round((Date.now() - quizStartTime) / 1000), now);
 }
 
-/* ════ SEND RESULTS ════ */
+/* ═══ SEND ═══ */
 async function sendResults(totalSec, finishedAt) {
   if (!WEBHOOK_URL || WEBHOOK_URL.includes("VOTRE_URL")) return;
-
   const el = document.getElementById('send-status');
-  el.innerHTML = '<span class="send-dot"></span> Envoi des résultats…';
-
-  const payload = {
-    nom:         playerName,
-    horodatage:  finishedAt.toISOString(),
-    score:       score,
-    totalSec:    totalSec,
-    reponses:    answerLog   // [{q, answer, correct, timeSec}]
-  };
-
+  el.innerHTML = '<span class="send-anim"></span> Envoi en cours…';
   try {
     await fetch(WEBHOOK_URL, {
-      method:  'POST',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-      mode:    'no-cors'
+      body: JSON.stringify({ nom: playerName, horodatage: finishedAt.toISOString(), score, totalSec, reponses: answerLog })
     });
-    el.innerHTML = '<span class="send-ok">✓ Résultats enregistrés</span>';
+    el.innerHTML = '<span class="send-ok">✓ Réponses bien enregistrées</span>';
   } catch (e) {
-    el.innerHTML = '<span class="send-err">⚠ Envoi impossible — résultats non sauvegardés</span>';
+    el.innerHTML = '<span class="send-err">⚠ Envoi impossible</span>';
   }
 }
 
-/* ════ UTILS ════ */
-function show(id) { const el = document.getElementById(id); el.classList.remove('hidden'); el.classList.add('screen'); }
-function hide(id) { document.getElementById(id).classList.add('hidden'); }
-
-// Lancement au chargement de la page
 window.addEventListener('DOMContentLoaded', initApp);
 </script>
 </body>
