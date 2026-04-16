@@ -209,7 +209,7 @@
 
     .field-label {
       font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--muted2); margin-bottom: 8px; display: block;
+      text-transform: uppercase; color: rgba(255, 255, 255, 0.85); margin-bottom: 8px; display: block;
     }
     input[type="text"] {
       width: 100%; padding: 14px 18px;
@@ -218,7 +218,7 @@
       color: var(--white); margin-bottom: 14px; outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
-    input[type="text"]::placeholder { color: var(--muted2); }
+    input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.5); }
     input[type="text"]:focus { border-color: var(--teal); background: rgba(24,255,167,0.05); }
 
     .btn-start {
@@ -529,54 +529,54 @@ const LOCK_TIME   = "2026-04-16T20:00:00";
 ═══════════════════════════════════════ */
 const QUESTIONS = [
   {
-    q: "Que signifie l'acronyme VEFA ?",
-    answers: ["Vente En Futur Aménagement", "Vente En l'État Futur d'Achèvement", "Valeur Estimée du Foncier Acquis", "Vente Effective du Foncier Aménagé"],
-    correct: 1
-  },
-  {
-    q: "Quel est le délai légal de rétractation après la signature d'un contrat de réservation en VEFA ?",
-    answers: ["3 jours", "7 jours", "10 jours", "14 jours"],
+    q: "Quel est le coût de vente moyen via Meta en Île-de-France ?",
+    answers: ["4800 €", "6400 €", "7200 €", "9000 €"],
     correct: 2
   },
   {
-    q: "Quel dispositif fiscal de l'immobilier neuf locatif a pris fin le 31 décembre 2024 ?",
-    answers: ["Dispositif Malraux", "Dispositif Denormandie", "Dispositif Pinel", "Dispositif Censi-Bouvard"],
-    correct: 2
-  },
-  {
-    q: "Quelle garantie assure la livraison d'un bien neuf même en cas de défaillance financière du promoteur ?",
-    answers: ["Garantie biennale", "Garantie de parfait achèvement", "Garantie décennale", "Garantie Financière d'Achèvement (GFA)"],
+    q: "Quel est le taux de réponse moyen d’un agent de qualification sur whatsapp en IA  ?",
+    answers: ["45%", "52%", "61%", "78%"],
     correct: 3
   },
   {
-    q: "Combien d'années couvre la garantie décennale après la réception des travaux ?",
-    answers: ["2 ans", "5 ans", "10 ans", "20 ans"],
-    correct: 2
+    q: "Quelle est la durée moyenne d’un appel abouti par un vendeur ?",
+    answers: ["45s", "1min et 10s", "1min et 35s", "2min et 40s"],
+    correct: 4
   },
   {
-    q: "Quel référentiel de performance énergétique s'applique aux constructions neuves depuis janvier 2022 ?",
-    answers: ["RT 2012", "BBC Effinergie", "HQE Premium", "RE2020"],
+    q: "Quel est le pourcentage moyen de ventes réalisées grâce aux actions print ?",
+    answers: ["10%", "20%", "30%", "45%"],
     correct: 3
   },
   {
-    q: "Quel est le montant maximum du dépôt de garantie si la livraison est prévue dans plus de 2 ans ?",
-    answers: ["1 % du prix de vente", "2 % du prix de vente", "5 % du prix de vente", "10 % du prix de vente"],
-    correct: 1
+    q: "Quel est le coût de vente moyen via Google en Île-de-France ?",
+    answers: ["5500 €", "6400 €", "7200 €", "8800 €"],
+    correct: 3
   },
   {
-    q: "Quel organisme certifie le label NF Habitat pour les logements neufs ?",
-    answers: ["ADEME", "CSTB", "Cerqual", "QUALITEL"],
+    q: "Quel est le délai minimum de diffusion d’une campagne Google pour atteindre une optimisation efficace ?",
+    answers: ["2 semaines", "1 mois", "2 mois", "3 mois"],
+    correct: 4
+  },
+  {
+    q: "Quel est le jour et l’heure où l’on observe le plus d’inscriptions ?",
+    answers: ["Lundi 18h", "Mardi 12h", "Jeudi 10h", "Samedi 16h"],
+    correct: 3
+  },
+  {
+    q: "Au T1 2026, quel est le taux de réservation avec une réduction ?",
+    answers: ["28,30%", "35,75%", "40,59%", "48,20%"],
+    correct: 3
+  },
+  {
+    q: "Au T1 2026, quelle est le montant moyen des remises accordées sur un logement neuf en Île-de-France ?",
+    answers: ["9800 €", "11250 €", "13404 €", "15900 €"],
+    correct: 3
+  },
+  {
+    q: "Quel est le nombre moyen d’interactions (mail, SMS, rendez-vous, appel) nécessaires pour conclure une vente ?",
+    answers: ["9", "12", "17", "24"],
     correct: 2
-  },
-  {
-    q: "Quel territoire concentre le plus grand nombre de mises en vente de logements neufs en France ?",
-    answers: ["Métropole de Lyon", "Bordeaux Métropole", "Île-de-France", "Métropole du Grand Lille"],
-    correct: 2
-  },
-  {
-    q: "Quel est le 1er critère de décision lors d'un achat en immobilier neuf selon les acquéreurs français ?",
-    answers: ["Le prix au m²", "La localisation du bien", "Les performances énergétiques", "Les délais de livraison"],
-    correct: 1
   }
 ];
 
